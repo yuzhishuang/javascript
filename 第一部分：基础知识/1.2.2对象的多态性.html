@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    (function(){
+        var makeSound = function(animal){
+            animal.sound();
+        };
+
+        var Duck = function(){};
+
+        Duck.prototype.sound = function(){
+            console.log('嘎嘎嘎');
+        };
+
+        var Chicken = function(){};
+
+        Chicken.prototype.sound = function(){
+            console.log('咯咯咯');
+        };
+
+        //如果需要增加时只需要增加一个构造函数就可以了
+
+        makeSound(new Duck());  //嘎嘎嘎
+
+        makeSound(new Chicken()); //咯咯咯
+    })();
+</script>
+</body>
+</html>
