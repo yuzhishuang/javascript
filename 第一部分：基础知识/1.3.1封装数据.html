@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //只能依赖变量的作用域来实现封装特性，通过函数来创建作用域
+    var myObject = (function(){
+        var _name = 'seven';  //私有（private）变量
+        return {
+            getName:function(){  //公开（public）方法
+                return _name;
+            }
+        }
+    })();
+
+    console.log(myObject.getName());  //输出seven
+    console.log(myObject._name);  //输出：undefined
+</script>
+</body>
+</html>

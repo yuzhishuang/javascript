@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    var obj1 = new Object();
+    var obj2 = {};
+    //可以利用ECMAScript5提供的Object.getPrototypeOf来查看这两个对象的原型
+    console.log(Object.getPrototypeOf(obj1));
+    console.log(Object.getPrototypeOf(obj2) === Object.prototype);   //true
+</script>
+</body>
+</html>

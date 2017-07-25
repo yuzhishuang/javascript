@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //Person并不是类，而是函数构造器，当使用new运算符来调用函数时，此时的函数就是一个构造器
+    function Person(name){
+        this.name = name;
+    };
+
+    Person.prototype.getName = function(){
+        return this.name;
+    };
+
+    var a = new Person('seven');
+     console.log(a.name);  //输出：seven
+    console.log(a.getName());  //输出：seven
+    console.log(Object.getPrototypeOf(a) === Person.prototype);  //输出：true
+</script>
+</body>
+</html>
