@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div1">我是一个div1</div>
+<div id="div2">我是一个div2</div>
+<script type="text/javascript">
+    //普通函数模式，this总是指向全局对象，在浏览器的javascript里，这个全局对象是window对象
+    window.name = 'globalName';
+    var getName = function(){
+        return this.name;
+    };
+
+    console.log(getName());  //输出：globalName
+
+    //或者
+    window.name = 'yzs';
+
+    var myObject = {
+        name: 'sven',
+        getName: function(){
+            return this.name;
+        }
+    };
+
+    var getName = myObject.getName;
+    console.log(getName());   //yzs
+    console.log(myObject.getName());  //sven
+
+    //div节点的事件函数内部，有一个局部callback方法，callback被作为普通函数调用时，callback内部的this指向window
+    window.id = 'window';
+    var a = 2;
+
+    document.getElementById('div1').onclick = function () {
+        alert(this.id);  //输出：'div1
+        var a = 1;
+        var callback = function(){
+            alert(this.id);  //输出：‘window’
+            alert('a='+a);  //输出a=1
+        }
+        callback();
+    }
+    //简单应用保存div1节点
+    document.getElementById('div2').onclick = function(){
+        var that = this;
+        var callback = function () {
+            alert(that.id);    //输出：‘div2’
+        }
+        callback();
+    }
+</script>
+</body>
+</html>

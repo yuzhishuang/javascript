@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //当函数作为对象的方法被调用时，this指向该对象
+    var obj = {
+        a:1,
+        getA: function () {
+            alert(this === obj);  //输出：true
+            alert(this.a);  //输出：1
+        }
+    };
+    obj.getA();
+</script>
+</body>
+</html>
