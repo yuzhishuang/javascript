@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //当对象a需要借用对象b的能力时，可以有选择的把对象a的构造器的原型指向对象b，从而达到继承的效果
+    var obj = {name:'yzs'};
+    var A = function(){};
+    A.prototype = obj;
+
+    var a = new A();
+    console.log(a.name);  //输出：yzs
+
+
+</script>
+</body>
+</html>
