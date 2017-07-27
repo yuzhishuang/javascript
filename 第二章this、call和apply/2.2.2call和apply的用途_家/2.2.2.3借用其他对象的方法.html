@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //借用方法的第一种场景是“借用构造函数”，通过这种技术，可以实现一些类似继承的效果
+    var A = function(name){
+        this.name = name;
+    };
+    var B = function(){
+        A.apply(this,arguments);
+    };
+    B.prototype.getName = function(){
+        return this.name;
+    };
+    var b = new B('yzs');
+    console.log(b.getName());  //输出：yzs
+
+    //借用Array.prototype对象上的方法，比如想往arguments中添加一个新的元素，通常会借用Array.prototype.push
+    (function(){
+        Array.prototype.push.call(arguments,3);
+        console.log(arguments);  //输出：【1，2，3】
+    })(1,2);
+</script>
+</body>
+</html>

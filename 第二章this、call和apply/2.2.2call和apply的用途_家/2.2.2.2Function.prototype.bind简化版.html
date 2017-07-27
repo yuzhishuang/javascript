@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //大部分高级浏览器都实现了内置的Function.prototype.bind，用来指定函数内部的this指向，即使没有原生的Function.prototype.bind实现，也可以模拟
+    Function.prototype.bind = function(context){
+        var self = this;  //保存原函数
+        return function (){  //返回一个新函数
+            return self.apply(context,arguments);  //执行新的函数的时候，会把之前传入的context当作新函数内的this
+        }
+    };
+
+    var obj = {
+        name:'yzs'
+    };
+
+    var func = function(){
+        alert(this.name);  //输出：yzs
+    }.bind(obj);
+
+    func();
+</script>
+</body>
+</html>

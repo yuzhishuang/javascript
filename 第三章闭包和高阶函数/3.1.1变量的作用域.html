@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //变量的作用域就是指变量的有效范围
+    var a = 1;
+    var func1 = function(){
+        var b = 2;
+        var func2 = function(){
+            var c = 3;
+            alert(b);  //输出;2
+            alert(a);  //1
+        };
+        func2();
+        alert(c);  //输出：c is not defined
+    };
+    func1();
+</script>
+</body>
+</html>
