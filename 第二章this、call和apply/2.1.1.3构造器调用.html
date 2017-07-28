@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //当用new运算符调用函数时，改函数会返回一个对象，构造器里的this就指向返回的这个对象
+    var MyClass = function(){
+        this.name = 'seven';
+    };
+
+    var obj = new MyClass();
+    alert(obj.name);  //seven
+
+    //如果构造器显式的返回了一个object类型的对象，那么此次运算结果最终会返回这个对象，而不是我们之前期待的this
+    var MyClass1 = function(){
+        this.name = 'yzs';
+        return{   //显式的返回一个对象
+            name:'abc'
+        }
+    };
+
+    var obj1 = new MyClass1();
+    alert(obj1.name);   //输出abc
+
+    //如果构造器不显示的返回任何数据，或者是返回一个非对象类型的数据，就不会造成上述问题
+    var MyClass2 = function () {
+        this.name = 'fsn';
+        return 'dnf';   //返回string类型
+    }
+    var obj2 = new MyClass2();
+    alert(obj2.name);  //输出：fsn
+</script>
+</body>
+</html>

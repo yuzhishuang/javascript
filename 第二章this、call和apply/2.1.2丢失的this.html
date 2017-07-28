@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div1">我是一个div</div>
+<script type="text/javascript">
+    //返回undefined 是因为getName2变成了普通函数，this指向全局
+    var obj = {
+        myName:'sven',
+        getName: function(){
+            return this.name;
+        }
+    };
+
+    console.log(obj.getName());  //输出：sven
+
+    var getName2 = obj.getName;
+    console.log(getName2());   //输出： undefined
+
+    document.getElementById = (function(func){
+        return function(){
+            return func.apply(document,arguments);
+        }
+    })
+
+    var getId = document.getElementById;
+    var div = getId('div1');
+
+    alert(div.id);
+</script>
+</body>
+</html>
