@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    //img对象经常用于进行数据上报
+    var report = function(src){
+        var img = new Image();
+        img.src = src;
+    };
+    report('http://xxx.com/getUserInfo');
+
+    //report函数进行数据上报会丢失30%左右的数据，img局部变量随即被销毁，而此时或许还没有来得及发出http请求，所以此次请求就会丢失掉
+    var report1 = (function(){
+        var imgs = [];
+        return function(src){
+            var img = new Image();
+            imgs.push(img);
+            img.src = src;
+        }
+    })();
+</script>
+</body>
+</html>

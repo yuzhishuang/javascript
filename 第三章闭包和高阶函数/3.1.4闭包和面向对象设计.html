@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //对象以方法的形式包含了过程，而闭包是在过程中以环境的形式包含了数据，通常勇面向对象能实现的功能，用闭包也能实现，反之亦然
+    var extent = function(){
+        var value = 0;
+        return {
+            call:function(){
+                value++;
+                console.log(value);
+            }
+        }
+    };
+
+    var extent = extent();
+
+    extent.call();  //输出：1
+    extent.call();  //输出：2
+    extent.call();  //输出：3
+
+    //如果换成面向对象的写法，就是
+    var extent1 = {
+        value:0,
+        call:function(){
+            this.value++;
+            console.log(this.value);
+        }
+    };
+
+    extent1.call();  //输出：1
+    extent1.call();  //输出：2
+    extent1.call();  //输出：3
+
+    //构造函数方法
+    var extent2 = function(){
+        this.value = 5;
+    };
+    extent2.prototype.call = function(){
+        this.value++;
+        console.log(this.value);
+    };
+    var ext = new extent2();
+    ext.call();   //输出：6
+    ext.call();   //输出：7
+    ext.call();   //输出：8
+
+    var extent3 = function(){
+        this.value = 10;
+        this.call = function(){
+            this.value++;
+            console.log(this.value);
+        }
+    }
+    var ext1 = new extent3();
+    ext1.call();
+    ext1.call();
+    ext1.call();
+
+</script>
+</body>
+</html>
