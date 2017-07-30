@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //实现一个“透明”的单例类，用户从这个类中创建对象的时候，可以像使用其他任何普通类一样。
+    //CreateDiv单例类，作用是负责在页面中创建唯一的div节点
+     var CreateDiv = (function(){
+         var instance;
+         var CreateDiv = function(html){
+             if(instance){
+                  return instance;
+             }
+             this.html = html;
+             this.init();
+             return instance = this;
+         };
+         CreateDiv.prototype.init = function(){
+             var div = document.createElement('div');
+             div.innerHTML = this.html;
+             document.body.appendChild(div);
+         };
+         return CreateDiv;
+     })();
+    var a = new CreateDiv('yzs');
+    var b = new CreateDiv('fsn');
+    alert(a ===b);  //true
+</script>
+</body>
+</html>
