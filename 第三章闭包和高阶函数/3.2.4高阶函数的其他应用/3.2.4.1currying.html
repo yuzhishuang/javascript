@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //函数柯里化currying，又称部分求值。一个currying的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值
+    //而是继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数被真正需要求值的时候，之前传入的所有参数都会被一次性用于求值
+
+    //编写一个计算每月开销的函数。在每天结束之前，记录今天花掉了多少钱
+    //初步
+    var monthlyCost = 0;
+    var cost = function(money){
+        monthlyCost += money;
+    };
+    cost(100);  //第一天开销
+    cost(200);  //第二天开销
+    cost(300);  //第三天开销
+    console.log('初步'+monthlyCost);   //输出：600
+
+    //优化版本
+    //在每个月的前29天，都只是保存当天的开销，知道第30天进行求职计算
+    var cost1 = (function(){
+        var args = [];
+        return function(){
+            if(arguments.length === 0){
+                var money = 0;
+                for(var i = 0,l = args.length;i < l;i++){
+                    money += args[i];
+                }
+                return money;
+            }else{
+                [].push.apply(args,arguments);
+            }
+        }
+    })();
+    cost1(100);  //未真正求值
+    cost1(200);  //未真正求值
+    cost1(300);  //未真正求值
+    console.log('cost1='+cost1());
+
+    //通用的function currying(){},function currying(){}接受一个参数，即将要被currying的函数。
+    //这个函数的作用遍历本月每天的开销并求出它们的总和
+    var currying = function(fn){
+        var args = [];
+        return function(){
+            if(arguments.length === 0){
+                return fn.apply(this,args);
+            }else{
+                [].push.apply(args,arguments);
+                return arguments.callee;
+            }
+        }
+    };
+
+    var cost2 = (function(){
+        var money = 0;
+        return function(){
+            for(var i = 0,l = arguments.length;i < l;i++){
+                money += arguments[i];
+            }
+            return money;
+        }
+    })();
+    var cost2 = currying(cost2);  //转化成currying函数
+    console.log(cost2);
+    cost2(100);  //未真正求值
+    cost2(100);  //未真正求值
+    alert(cost2()); //求值并输出：200
+</script>
+</body>
+</html>

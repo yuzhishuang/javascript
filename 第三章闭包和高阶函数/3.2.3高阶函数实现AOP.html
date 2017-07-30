@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //AOP（面向切面编程）的主要作用是把一些跟核心业务逻辑模块无关的功能抽离出来。
+    //把这些功能抽离出来之后，再通过“动态织入”的方式参入业务逻辑模块中
+    //这样做的好处首先是可以保持业务逻辑模块的纯净和高内聚性，其次是可以很方便地复用日志统计等功能模块
+
+    //扩展Function.prototype来做到这一点
+    Function.prototype.before = function(beforefn){
+        var __self = this;  //保存原函数的引用
+        return function(){  //返回包含了原函数和新函数的“代理”函数
+            beforefn.apply(this,arguments);  //执行新函数，修正this
+            return __self.apply(this,arguments);  //执行原函数
+        }
+    };
+
+    Function.prototype.after = function(afterfn){
+        var __self = this;
+        return function(){
+            var ret = __self.apply(this,arguments);
+            afterfn.apply(this,arguments);
+            return ret;
+        }
+    }
+
+    var func = function(){
+        console.log(2);
+    };
+    var func1 = func.before(function(){console.log(1)}).after(function(){console.log(3)});
+    console.log(func1);
+    func1();
+
+    var func2 = func.after(function(){console.log(3)}).before(function(){console.log(1)});
+    func2();
+
+</script>
+</body>
+</html>
