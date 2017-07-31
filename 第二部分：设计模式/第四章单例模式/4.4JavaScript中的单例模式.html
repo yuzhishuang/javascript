@@ -23,6 +23,35 @@
     };
     namespace1.a();
 
+//还可以动态地创建命名空间
+    var MyApp = {};
+    MyApp.namespace = function(name){
+        var parts = name.split('.');
+        var current = MyApp;
+        for(var i in parts){
+            if(!current[parts[i]]){
+                current[parts[i]] = {};
+            }
+            current = current[parts[i]];
+        }
+    };
+    MyApp.namespace('event');
+    MyApp.namespace('dom.style');
+    console.log(MyApp);
+
+    //2、使用闭包封装私有变量
+    //这种方法把一些变量封装在闭包的内部，只暴露一些接口跟外界通信
+    var user = (function(){
+        var __name = 'yzs',
+            __age = 18;
+        return {
+            getUserInfo:function(){
+                return __name + '-'+__age;
+            }
+        }
+    })();
+    console.log(user.getUserInfo());
+
 </script>
 </body>
 </html>
