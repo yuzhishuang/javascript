@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div id="div1">点我绑定事件</div>
+</head>
+<body>
+<script type="text/javascript">
+    //在各个浏览器中能够通用的事件绑定函数addEvent
+    //初版
+    //缺点：当它每次被调用的时候都会执行里面的if条件分支
+    (function(){
+        var addEvent = function(elem,type,handler){
+            if(window.addEventListener){
+                return elem.addEventListener(type,handler,false);
+            }
+            if(window.attachEvent){
+                return elem.attachEvent('on' + type,handler);
+            }
+        };
+    })();
+
+    //第二种方案：我们把嗅探浏览器的操作提前到代码加载的时候，在代码加载的时候就立刻进行一次判断，以便让addEvent返回一个包裹了正确逻辑的函数
+    //缺点：如果从头到尾都没有使用过addEvent函数，这样看来，前一次的浏览器嗅探就是完全多余的操作，而且这也会稍稍延长页面ready的时间
+    (function(){
+        var addEvent = (function(){
+            if(window.addEventListener){
+                return function(elem,type,handler){
+                    elem.addEventListener(type,handler,false);
+                }
+            }
+            if(window.attachEvent){
+                return function(elem,type,handler){
+                    elem.attachEvent('on' + type,handler);
+                }
+            }
+        })();
+    })();
+
+    //第三种方案：此时addEvent依然被声明为一个普通函数，在函数里依然有一些分支判断，但是在第一次进入条件分支之后，在函数内部会重写这个函数，
+    // 重写之后的函数就是我们期望的addEvent函数，在下一次进入addEvent函数的时候，addEvent函数里不再存在条件分支语句
+    (function(){
+        var addEvent = function(elem,type,handler){
+            if(window.addEventListener){
+                addEvent = function(elem,type,handler){
+                    elem.addEventListener(type,handler,false);
+                }
+            }else if(window.attachEvent){
+                addEvent = function(elem,type,handler){
+                    elem.attachEvent('on' + type,handler);
+                }
+            }
+            addEvent(elem,type,handler);
+        };
+        var div = document.getElementById('div1');
+        addEvent(div,'click',function(){
+            alert(1);
+        });
+        addEvent(div,'click',function(){
+            alert(2);
+        });
+    })();
+</script>
+</body>
+</html>

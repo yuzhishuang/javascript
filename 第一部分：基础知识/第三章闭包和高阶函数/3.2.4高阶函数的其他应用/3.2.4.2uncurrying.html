@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //我们常常让类数组对象去借用Array.prototype的方法，这是call和apply最常用的应用场景之一
+    (function(){
+        Array.prototype.push.call(arguments,4);
+        console.log(arguments);   //输出：【1，2，3，4】
+    })(1,2,3);
+
+    //有没有办法把泛化this的过程提取出来呢：uncurrying就是用来解决这个问题的
+    Function.prototype.uncurrying = function(){
+        var self = this;   //self此时是Array.prototype.push
+        return function(){
+            var obj = Array.prototype.shift.call(arguments);  //arguments对象的第一个元素被截去，剩下【2】
+            return self.apply(obj,arguments);  //相当于Array.prototype.push.apply(obj,2)
+        };
+    };
+    var push = Array.prototype.push.uncurrying();
+    (function(){
+        push(arguments,4);
+        console.log(arguments);
+    })(1,2,3);
+
+    //可以一次性把Array.prototype上的方法“复制”到array对象，同样这些方法可操作的对象也不仅仅只是array对象
+    for(var i = 0,fn,ary = ['push','shift','forEach'];fn = ary[i++];){
+        Array[fn] = Array.prototype[fn].uncurrying();
+    };
+    var obj = {
+        "length":3,
+        "0":1,
+        "1":2,
+        "2":3
+    };
+    Array.push(obj,4);  //向对象中添加一个元素
+    console.log(obj.length);  //输出：4
+
+    var first = Array.shift(obj);  //截取第一个元素
+    console.log(first);  //输出：1
+    console.log(obj);  //输出：{0:2,1:3,2:4,length:3}
+
+    Array.forEach(obj,function(i,n){
+        console.log(n);  //分别输出：0，1，2
+    })
+</script>
+</body>
+</html>

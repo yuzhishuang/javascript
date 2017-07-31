@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //实现标准的单例模式，用一个变量来标志当前是否已经为某个类创建过对象，如果是，则在下一次获取该类的实例时，直接返回之前创建的对象
+    (function(){
+        var Singleton = function(name){
+            this.name = name;
+            this.instance = null;
+        };
+        Singleton.prototype.getName = function(){
+            alert(this.name);
+        };
+        Singleton.getInstance = function(name){
+            if(!this.instance){
+                this.instance = new Singleton(name);
+            }
+            return this.instance;
+        };
+        var a = Singleton.getInstance('yzs');
+        var b = Singleton.getInstance('fsn');
+        console.log(a === b);  //true
+    })();
+
+    //或者
+    (function(){
+        var Singleton = function(name){
+            this.name = name;
+        };
+        Singleton.prototype.getName = function(){
+            alert(this.name);
+        };
+        Singleton.getInstance = function(name){
+            var instance = null;
+            return function (name) {
+                if(!instance){
+                    instance = new Singleton(name);
+                }
+                return instance;
+            }
+        }();
+        var a = Singleton.getInstance('yzs');
+        var b = Singleton.getInstance('fsn');
+        console.log(a === b);  //true
+    })();
+</script>
+</body>
+</html>
