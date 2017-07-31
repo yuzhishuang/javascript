@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+//ajax异步请求应用中，回调函数的使用非常频繁，callback函数当做参数传入发起ajax请求的方法中，待请求完成之后执行callback函数
+//    var getUserInfo = function(userId,callback){
+//        $.ajax('http://xxx.com/getUserInfo?'+userId,function(data){
+//            if(typeof callback === 'function'){
+//                callback(data);
+//            }
+//        });
+//    }
+//    getUserInfo(13157,function(data){
+//        alert(data.userName);
+//    });
+
+    //初版（难以复用）
+    //在页面中创建100个div节点，然后把这些div节点都设置为隐藏
+    var appendDiv = function(){
+        for(var i = 0;i<100;i++){
+            var div = document.createElement('div');
+            div.innerHTML = i;
+            document.body.appendChild(div);
+            div.style.display = 'none';
+        }
+    };
+    appendDiv();
+
+    //把div.style.display = 'none'的逻辑硬编码在appendDiv里显然是不合理的，难以复用的函数，并不是每个人创建了节点之后就希望它们立刻被隐藏
+    //把div.style.display = 'none'这行代码抽出来，用回调函数的形式传入appendDiv方法
+    var appendSpan = function(callback){
+        for(var i = 0;i<100;i++){
+            var span = document.createElement('span');
+            span.innerHTML = i;
+            document.body.appendChild(span);
+            if(typeof callback === 'function'){
+                callback(span);
+            }
+        }
+    };
+
+    appendSpan(function(node){
+        node.style.display = 'none';
+    });
+
+
+</script>
+</body>
+</html>

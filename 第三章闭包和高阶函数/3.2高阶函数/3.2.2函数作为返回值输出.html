@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //判断数据的类型
+    //第一种方式
+    var isString = function(obj){
+        return Object.prototype.toString.call(obj) === '[object String]';
+    };
+    var isArray = function(obj){
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
+    var isNumber = function(obj){
+        return Object.prototype.toString.call(obj) === '[object Number]';
+    };
+
+    console.log(isArray([1,2,3]));
+    console.log(isArray('str'));
+
+    //这些函数的大部分实现都是相同的，不同的只是Object.prototype.toString.call(obj)返回的字符串。
+    //优化
+    var isType = function(type){
+        return function(obj){
+            return Object.prototype.toString.call(obj) === '[object '+type+']';
+        }
+    };
+    var isString1 = isType('String');
+    var isArray1 = isType('Array');
+    var isNumber = isType('Number');
+
+    console.log(isArray1([1,2,3]));
+
+    //还可以用循环语句，来批量注册这些isType函数
+    var Type = {};
+    for(var i= 0,type;type = ['String','Array','Number'][i++];){
+        (function(type){
+            Type['is'+type] = function(obj){
+                return Object.prototype.toString.call(obj) === '[object '+type+']';
+            }
+        })(type)
+    }
+    console.log(Type.isArray([]));
+
+
+</script>
+</body>
+</html>
