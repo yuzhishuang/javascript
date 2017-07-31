@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+//单例模式的核心是确保只有一个实例，并提供全局访问
+//全局变量不是单例模式，但是在JavaScript开发中，我们经常会把全局变量当成单例来使用
+
+//以下几种方式可以相对降低全局变量带来的命名污染
+
+//1、使用命名空间  最简单的方法依然是用对象字面量的形式
+    var namespace1 = {
+        c: 1,
+        a:function(){
+            alert(this.c);
+        },
+        b:function(){
+            alert(22);
+        }
+    };
+    namespace1.a();
+
+</script>
+</body>
+</html>
