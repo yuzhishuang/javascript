@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="position:absolute;background:blue" id="div">我是div</div>
+<script type="text/javascript">
+    //5.4.3让小球动起来
+    //定义Animate类，Animate的构造函数接受一个参数：即将运动起来的dom节点。
+    var Animate = function(dom){
+        this.dom = dom;  //进行运动的dom节点
+        this.startTime = 0;  //动画开始的时间
+        this.startPos = 0;  //动画开始时，dom节点的位置，即dom的初始位置
+        this.endPos = 0;  //动画结束时，dom节点的位置，即dom的目标位置
+        this.propertyName = null;  //dom节点需要被改变的css属性名
+        this.easing = null;  //缓动算法
+        this.duration = null;  //动画持续时间
+    }
+    //Animate.prototype.start方法负责启动这个动画，在动画被启动的瞬间记录一些信息
+    //接收4个参数：propertyName:要改变的css属性名，比如‘left’、‘top’，分别表示左右移动和上下移动
+    //endPos：小球运动的目标位置
+    //duration：动画持续时间
+    //easing：缓动算法
+    Animate.prototype.start = function(propertyName,endPos,duration,easing){
+        this.startTime = +new Date;  //动画启动时间
+        this.startPos = this.dom.getBoundingClientRect()[propertyName];  //dom节点初始位置
+        this.propertyName = propertyName;  //dom节点需要被改变的css属性名
+        this.endPos = endPos;  //dom节点目标位置
+        this.duration = duration;  //动画持续时间
+        this.easing = tween[easing];  //缓动算法
+
+        var self = this;
+        var timeId = setInterval(function(){  //启动定时器，开始执行动画
+            if(self.step() === false){    //如果动画已结束，则清除定时器
+                clearInterval(timeId);
+            }
+        },19);
+    };
+
+</script>
+</body>
+</html>
