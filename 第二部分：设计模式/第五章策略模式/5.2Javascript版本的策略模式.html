@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    //在5.1节中，我们让strategy对象从各个策略类中创建出来，这是模拟一些传统面向对象语言的实现。
+    //实际上在javascript语言中，函数也是对象，所以更简单和直接的做法是把strategy直接定义为函数
+    (function(){
+        var strategies = {
+            "S":function(salary){
+                return salary * 4;
+            },
+            "A":function(salary){
+                return salary * 3;
+            },
+            "B":function(salary){
+                return salary * 2;
+            }
+        };
+        var calculateBonus = function(level,salary){
+            return strategies[level](salary);
+        };
+        console.log(calculateBonus('S',20000));  //输出：80000
+        console.log(calculateBonus('A',10000));  //输出：30000
+    })();
+</script>
+</body>
+</html>
