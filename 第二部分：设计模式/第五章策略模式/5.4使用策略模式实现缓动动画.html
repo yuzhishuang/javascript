@@ -38,6 +38,23 @@
             }
         },19);
     };
+    //下面方法代表小球运动每一帧要做的事情。
+    Animate.prototype.step = function(){
+        var t = +new Date;  //取得当前时间
+        if(t >= this.startTime + this.duration){  //(1)
+            this.updata(this.endPos);  //更新小球的css属性值
+            return false;
+        }
+        var pos = this.easing(t - this.startTime,this.startPos,this.endPos-this.startPos,this.duration); //pos为小球当前位置
+        this.update(pos);  //更新小球的css属性值
+    };
+    //负责更新小球CSS属性值
+    Animate.prototype.update = function(pos){
+        this.dom.style[this.propertyName] = pos + 'px';
+    };
+    var div = document.getElementById('div');
+    var animate = new Animate(div);
+    animate.start('left',500,1000,'strongEaseOut');
 
 </script>
 </body>
