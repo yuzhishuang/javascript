@@ -6,13 +6,74 @@
 </head>
 <body>
 <script type="text/javascript">
-    //不用带模式的情况
-    var Flower = function(){};
-    var xiaoming = {
-        sendFlower:function(target){
+    (function(){
+        //不用带模式的情况
+        var Flower = function(){};
+        var xiaoming = {
+            sendFlower:function(target){
+                var flower = new Flower();
+                target.receiveFlower(flower);
+            }
+        };
+        var A = {
+            receiveFlower:function(flower){
+                console.log('收到花'+flower);
+            }
+        };
+        xiaoming.sendFlower(A);
+    })();
 
+    //接下来引入代理B,即小明通过B来给A送花
+    (function(){
+        var Flower = function(){};
+        var xiaoming = {
+            sendFlower:function(target){
+                var flower = new Flower();
+                target.receiveFlower(flower);
+            }
+        };
+        var B = {
+            receiveFlower:function(flower){
+                A.receiveFlower(flower);
+            }
+        };
+        var A = {
+            receiveFlower:function(flower){
+                console.log('收到花' + flower);
+            }
+        };
+        xiaoming.sendFlower(B);
+    })();
+
+    //最终版本：B监听A的心情
+    (function(){
+        var Flower = function(){};
+        var xiaoming = {
+            sendFlower:function(target){
+                var flower = new Flower();
+                target.receiveFlower(flower);
+            }
+        };
+        var B = {
+            receiveFlower:function(flower){
+                A.listenGoodMood(function(){  //监听A的好心情
+                    A.receiveFlower(flower);
+                });
+            }
+        };
+        var A = {
+            receiveFlower:function(flower){
+                console.log('收到花' + flower);
+            },
+            listernGoodMood:function(fn){  //假设10秒之后A的心情变好
+                setTimeout(function(){
+                    fn();
+                },10000);
+            }
         }
-    }
+        xiaoming.sendFlower(B);
+    })();
+
 </script>
 </body>
 </html>
