@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="checkbox" id="1" />1
+    <input type="checkbox" id="2" />2
+    <input type="checkbox" id="3" />3
+    <input type="checkbox" id="4" />4
+    <input type="checkbox" id="5" />5
+    <input type="checkbox" id="6" />6
+    <input type="checkbox" id="7" />7
+    <input type="checkbox" id="8" />8
+    <input type="checkbox" id="9" />9
+<script type="text/javascript">
+    //在web开发中，也许最大的开销就是网络请求。假设我们在做一个文件同步的功能，当我们选中一个checkbox的时候，它对应的文件就会被同步到另外一台备用服务器上面
+    //给checkbox绑定点击事件，并且在点击的同时往另一台服务器同步文件
+//    (function(){
+//        var synchronousFile = function(id){
+//            console.log('开始同步文件,id为：'+id);
+//        }
+//        var checkbox = document.getElementsByTagName('input');
+//        for(var i = 0,c;c = checkbox[i++];){
+//            c.onclick = function(){
+//                if(this.checked === true){
+//                    synchronousFile(this.id);
+//                }
+//            }
+//        }
+//    })();
+
+    //上面缺点：当一秒内点中多个checkbox，可以预见，如此频繁的网络请求会带来相当大的开销
+    //解决方案：通过一个代理函数proxySynchronousFile来收集一段时间之内的请求，最后一次性的发送给服务器
+    (function(){
+        var synchronousFile = function(id){
+            console.log('开始同步文件,id为：'+id);
+        }
+        var proxySynchronousFile = (function(){
+            var cache = [],  //保存一段时间内需要同步的ID
+                    timer;  //定时器
+            return function(id){
+                cache.push(id);
+                if(timer){  //保证不会覆盖已经启动的定时器
+                    return;
+                }
+                timer = setTimeout(function(){
+                    synchronousFile(cache.join(','));  //2秒后向本体发送需要同步的ID集合
+                    clearTimeout(timer);  //清空定时器
+                    timer = null;
+                    cache.length = 0;  //清空ID集合
+                },2000);
+            }
+        })();
+        var checkbox = document.getElementsByTagName('input');
+        for(var i = 0,c;c=checkbox[i++];){
+            c.onclick = function(){
+                if(this.checked === true){
+                    proxySynchronousFile(this.id);
+                }
+            }
+        }
+    })();
+
+</script>
+</body>
+</html>
